@@ -25,10 +25,8 @@ class StudentController extends Controller
     {
         \Log::info('Usuario autenticado:', ['role' => auth()->user()->role]);
         // Solo admin y superadmin pueden acceder
-        if (!in_array(auth()->user()->role, ['admin', 'superadmin'])) {
-            return response()->json(['message' => 'Acceso no autorizado'], 403);
-        }
 
+        
         $validated = $request->validate([
             'nroRegistro' => 'required|unique:students,nroRegistro',
             'nombreCompleto' => 'required|string|max:255',

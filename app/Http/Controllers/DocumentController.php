@@ -136,6 +136,7 @@ class DocumentController extends Controller
         $validated = $request->validate([
             'tipo' => 'nullable|in:certificadoNacimiento,tituloBachiller,carnetIdentidad,certificadoEstudio,otroDocumento',
             'documentoURL' => 'nullable|file|mimes:pdf,jpg,png',
+            'estado' => 'nullable|in:activo,archivado,eliminado',
         ]);
 
         if ($request->hasFile('documentoURL')) {
@@ -150,6 +151,10 @@ class DocumentController extends Controller
 
         if ($request->has('tipo')) {
             $document->tipo = $validated['tipo'];
+        }
+
+        if ($request->has('estado')) {
+            $document->estado = $validated['estado'];
         }
 
         $document->save(); // Guarda los cambios

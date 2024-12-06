@@ -14,6 +14,9 @@ class LogController extends Controller
      */
     public function index()
     {
+        if (!in_array(auth()->user()->role, ['superadmin'])) {
+            return response()->json(['message' => 'Acceso no autorizado'], 403);
+        }
         // Obtiene todos los logs registrados
         $logs = Log::all();
 
@@ -56,6 +59,9 @@ class LogController extends Controller
     public function show($id)
     {
         // Busca el log por su ID
+        if (!in_array(auth()->user()->role, ['superadmin'])) {
+            return response()->json(['message' => 'Acceso no autorizado'], 403);
+        }
         $log = Log::find($id);
 
         // Si no se encuentra el log, retorna un mensaje de error
@@ -74,6 +80,10 @@ class LogController extends Controller
      */
     public function destroy($id)
     {
+        // Verifica un rol que no existe, entonces no podra acceder nadie a eliminar logs.
+        if (!in_array(auth()->user()->role, ['imposible'])) {
+            return response()->json(['message' => 'Acceso no autorizado'], 403);
+        }
         // Busca el log por su ID
         $log = Log::find($id);
 

@@ -18,7 +18,10 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {   
+        if (!in_array(auth()->user()->role, ['superadmin'])) {
+            return response()->json(['message' => 'Acceso no autorizado'], 403);
+        }
         // Obtiene todos los usuarios registrados
         $users = User::all();
 
@@ -70,6 +73,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
+        if (!in_array(auth()->user()->role, ['superadmin'])) {
+            return response()->json(['message' => 'Acceso no autorizado'], 403);
+        }
         // Busca el usuario por su ID
         $user = User::find($id);
 
@@ -90,6 +96,9 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!in_array(auth()->user()->role, ['superadmin'])) {
+            return response()->json(['message' => 'Acceso no autorizado'], 403);
+        }
         // Valida la entrada
         $validated = $request->validate([
             'name' => 'sometimes|string|max:255',
@@ -125,7 +134,10 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
+    {   
+        if (!in_array(auth()->user()->role, ['superadmin'])) {
+            return response()->json(['message' => 'Acceso no autorizado'], 403);
+        }
         // Busca el usuario por su ID
         $user = User::find($id);
 
